@@ -3,12 +3,12 @@ import { action } from '@ember/object';
 
 import type { BaseTreeNode } from 'commander-ts';
 
-interface FolderCompSign {
+interface Args {
     node: BaseTreeNode;
     onClick: (node: BaseTreeNode) => void;
 }
 
-export default class FolderComponent extends Component<FolderCompSign> {
+export default class FolderComponent extends Component<Args> {
     @action
     onClick() {
         this.args.onClick(this.args.node);
