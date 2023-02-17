@@ -8,4 +8,20 @@ declare global {
   // interface Function extends Ember.FunctionPrototypeExtensions {}
 }
 
-export {};
+
+declare module 'commander-ts' {
+  export enum BaseTreeNodeType {
+    folder = "folders",
+    document = "document",
+  }
+
+  export type BaseTreeNodeAttr = {
+    title: string
+  };
+
+  export interface BaseTreeNode {
+    id: string;
+    type: BaseTreeNodeType;
+    attributes: BaseTreeNodeAttr;
+  }
+}

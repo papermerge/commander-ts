@@ -1,3 +1,9 @@
-{{#each this.nodes as |node|}}
-    {{node.title}}
-{{/each}}
+<button type="button" {{on "click" this.onHomeClick}}>Home</button>
+
+{{#if this.load.value}}
+  {{#each this.load.value as |node|}}
+    <Folder @node={{node}} @onClick={{this.onNodeClick}} />
+  {{/each}}
+{{else if this.load.error}}
+  {{this.load.error}}
+{{/if}}
