@@ -1,7 +1,5 @@
-<button type="button" {{on "click" this.onHomeClick}}>Home</button>
-
-<Breadcrumb />
+<Breadcrumb @endpoint={{@endpoint}} @onClick={{@onNodeClick}} />
 
 {{#each this.nodes as |node|}}
-    <Folder @node={{node}} @onClick={{this.onNodeClick}} />
+    <Folder @node={{node}} @onClick={{@onNodeClick}} />
 {{/each}}
