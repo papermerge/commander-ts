@@ -1,9 +1,10 @@
 import Component from '@glimmer/component';
 import { trackedFunction } from 'ember-resources/util/function';
 
+
 interface Args {
     endpoint: string;
-    onClick: (node_id: string|undefined) => void;
+    onClick: (node_id: string) => void;
 }
 
 
@@ -21,6 +22,6 @@ export default class Commander extends Component<Args> {
     });
 
     get nodes() {
-        return this.data.value?? [];
+        return this.data.value ?? [];
     }
 }

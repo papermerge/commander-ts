@@ -19,7 +19,7 @@ declare module 'commander-ts' {
     title: string
   };
 
-  export interface BaseTreeNode {
+  export interface IBaseTreeNode {
     id: string;
     type: BaseTreeNodeType;
     attributes: BaseTreeNodeAttr;
