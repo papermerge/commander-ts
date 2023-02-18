@@ -1,4 +1,3 @@
-import { action } from '@ember/object';
 import Component from '@glimmer/component';
 import { trackedFunction } from 'ember-resources/util/function';
 
