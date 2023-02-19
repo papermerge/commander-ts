@@ -1,3 +1,5 @@
+@import "node_modules/bootstrap/scss/bootstrap";
+
 .node {
     display: flex;
     align-items: center;
@@ -18,5 +20,22 @@
     .icon.document {
       background-image: url("/assets/images/document.svg");
       background-size: 100% 100%;
+    }
+}
+
+
+ul.breadcrumb {
+    display: flex;
+    list-style-type: none;
+
+    li.breadcrumb-item {
+        margin: 0.25rem;
+        .btn {
+            text-decoration: none;
+            padding: 0;
+        }
+        .btn:hover {
+            text-decoration: underline;
+        }
     }
 }

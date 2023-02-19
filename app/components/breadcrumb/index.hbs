@@ -1,8 +1,10 @@
-<ul>
-    {{#each this.data.value.attributes.breadcrumb as |item|}}
-        <Breadcrumb::Item
-            @id={{get item 1}}
-            @title={{get item 0}}
-            @onClick={{@onClick}} />
-    {{/each}}
-</ul>
+<nav aria-label="breadcrumb" class="m-2 nav-breadcrumb">
+    <ul class="breadcrumb">
+        {{#each this.data.value.attributes.breadcrumb as |item|}}
+            <Breadcrumb::Item
+                @id={{get item 1}}
+                @title={{get item 0}}
+                @onClick={{@onClick}} />
+        {{/each}}
+    </ul>
+</nav>
