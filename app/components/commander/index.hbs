@@ -1,5 +1,7 @@
 <Breadcrumb @endpoint={{@endpoint}} @onClick={{@onNodeClick}} />
 
 {{#each this.nodes as |node|}}
-    <Folder @node={{node}} @onClick={{@onNodeClick}} />
+    {{#let (component node.nodeType) as |NodeType|}}
+        <NodeType @node={{node}} @onClick={{@onNodeClick}} />
+    {{/let}}
 {{/each}}
