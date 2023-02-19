@@ -1,3 +1,8 @@
 <div role="button" class="node document" {{on "click" this.onClick}}>
-  D  {{@node.attributes.title}}
+    <div class="icon document"></div>
+    <div class="title d-flex flex-row align-items-center">
+        <div class="mx-2">
+            {{@node.attributes.title}}
+        </div>
+    </div>
 </div>

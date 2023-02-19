@@ -1,0 +1,22 @@
+.node {
+    display: flex;
+    align-items: center;
+    // make node title text unselectable
+    user-select: none;
+    position: relative;
+  
+    .icon {
+      width: 5rem;
+      height: 4rem;
+    }
+  
+    .icon.folder {
+      background-image: url("/assets/images/folder.svg");
+      background-size: 100% 100%;
+    }
+  
+    .icon.document {
+      background-image: url("/assets/images/document.svg");
+      background-size: 100% 100%;
+    }
+}

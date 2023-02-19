@@ -1,3 +1,9 @@
 <div role="button" class="node folder" {{on "click" this.onClick}}>
-  F  {{@node.attributes.title}}
+    <div class="icon folder"></div>
+
+    <div class="title d-flex flex-row align-items-center">
+        <div class="mx-2">
+            {{@node.attributes.title}}
+        </div>
+    </div>
 </div>
