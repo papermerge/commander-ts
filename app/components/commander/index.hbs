@@ -9,7 +9,10 @@
         Empty
     {{/each}}
 {{else if this.load.isLoading}}
-  Loading...
+    <Folder::Placeholder />
+    <Folder::Placeholder />
+    <Folder::Placeholder />
+    <Folder::Placeholder />
 {{else if this.load.isError}}
     {{ this.load.error }}
 {{/if}}

@@ -23,6 +23,16 @@
     }
 }
 
+.node.folder.place-holder {
+  margin: 0.5rem;
+  
+
+  .icon {
+    width: 4rem;
+    height: 3rem;
+  }
+}
+
 
 ul.breadcrumb {
     display: flex;

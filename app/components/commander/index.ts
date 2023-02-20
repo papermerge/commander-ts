@@ -1,5 +1,4 @@
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
 import { resource, use, resourceFactory } from 'ember-resources';
 import { TrackedObject } from 'tracked-built-ins';
 
@@ -44,15 +43,12 @@ class BaseTreeNode implements IBaseTreeNode {
   }
 }
 
-const NodesResource = resourceFactory((endpoint) => {
+
+const NodesResource = resourceFactory((args_foo) => {
 
   return resource(({ on }) => {
 
-    let current_endpoint = endpoint;
-
-    if (typeof endpoint === 'function') {
-      current_endpoint = endpoint();
-    }
+    let [base_url, current_endpoint] = args_foo();
 
     let state = new TrackedObject({
       isResolved: false,
@@ -65,11 +61,9 @@ const NodesResource = resourceFactory((endpoint) => {
 
     let controller = new AbortController();
 
-    console.log(endpoint);
-
     on.cleanup(() => controller.abort());
 
-    fetch(`http://127.0.0.1:8000/api/nodes/${current_endpoint}/`,{
+    fetch(`${base_url}${current_endpoint}/`,{
         signal: controller.signal,
         headers: {
           Authorization:
@@ -98,6 +92,7 @@ const NodesResource = resourceFactory((endpoint) => {
 
 export default class Commander extends Component<Args> {
 
-  @use load = NodesResource(() => this.args.endpoint);
-
+  @use load = NodesResource(() => [
+    'http://127.0.0.1:8000/api/nodes/', this.args.endpoint
+  ]);
 }
