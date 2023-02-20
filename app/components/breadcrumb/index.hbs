@@ -1,10 +1,25 @@
-<nav aria-label="breadcrumb" class="m-2 nav-breadcrumb">
-    <ul class="breadcrumb">
-        {{#each this.data.value.attributes.breadcrumb as |item|}}
-            <Breadcrumb::Item
-                @id={{get item 1}}
-                @title={{get item 0}}
-                @onClick={{@onClick}} />
-        {{/each}}
-    </ul>
-</nav>
+{{#if this.load.isLoading}}
+    <p class="card-text placeholder-glow">
+      <span class="placeholder col-3"></span>
+      <span class="placeholder col-3"></span>
+      <span class="placeholder col-3"></span>
+    </p>
+{{else}}
+    <nav aria-label="breadcrumb" class="m-2 nav-breadcrumb">
+        <ul class="breadcrumb">
+            {{#if this.load.isResolved}}
+                {{#each this.load.value.attributes.breadcrumb as |item|}}
+                    <Breadcrumb::Item
+                        @id={{get item 1}}
+                        @title={{get item 0}}
+                        @onClick={{@onClick}} />
+                
+                {{else}}
+                    Empty
+                {{/each}}
+            {{else if this.load.isError}}
+                {{this.load.error}}
+            {{/if}}
+        </ul>
+    </nav>
+{{/if}}
