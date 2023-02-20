@@ -41,7 +41,6 @@ const NodesResource = resourceFactory((args_foo) => {
       state.isResolved = true;
       state.isError = false;
       state.isLoading = false;
-      console.log(state.value);
     })
     .catch(error => {
       state.error = error;
