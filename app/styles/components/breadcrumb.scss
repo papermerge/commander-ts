@@ -1,0 +1,25 @@
+
+nav.nav-breadcrumb {
+    display: flex;
+    align-items: center;
+  }
+  
+  
+  ul.breadcrumb {
+      display: flex;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+  
+      li.breadcrumb-item {
+          margin: 0.25rem;
+          .btn {
+              text-decoration: none;
+              padding: 0;
+          }
+          .btn:hover {
+              text-decoration: underline;
+          }
+      }
+  }
+  

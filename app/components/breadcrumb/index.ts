@@ -1,7 +1,6 @@
-import { trackedFunction } from 'ember-resources/util/function';
 import Component from '@glimmer/component';
-import { resource, use, resourceFactory } from 'ember-resources';
-import { TrackedObject } from 'tracked-built-ins';
+import { resource, use } from 'ember-resources';
+import { TrackedObject, tracked } from 'tracked-built-ins';
 
 
 interface Args {
@@ -9,12 +8,12 @@ interface Args {
   onClick: (item: string) => void;
 }
 
-const NodesResource = resourceFactory((args_foo) => {
 
-  return resource(({ on }) => {
+export default class Breadcrumb extends Component<Args> {
 
-    let [base_url, current_endpoint] = args_foo();
+  @tracked data = new TrackedObject({});
 
+  @use load = resource(({ on }) => {
     let state = new TrackedObject({
       isResolved: false,
       isLoading: true,
@@ -28,7 +27,7 @@ const NodesResource = resourceFactory((args_foo) => {
 
     on.cleanup(() => controller.abort());
 
-    fetch(`${base_url}${current_endpoint}/`,{
+    fetch(`http://127.0.0.1:8000/api/folders/${this.args.endpoint}`,{
         signal: controller.signal,
         headers: {
           Authorization:
@@ -37,7 +36,7 @@ const NodesResource = resourceFactory((args_foo) => {
     })
     .then(response => response.json())
     .then(result => {
-      state.value = result.data ?? [];
+      this.data = result.data ?? [];
       state.isResolved = true;
       state.isError = false;
       state.isLoading = false;
@@ -51,11 +50,4 @@ const NodesResource = resourceFactory((args_foo) => {
 
     return state;
   });
-});
-
-
-export default class Breadcrumb extends Component<Args> {
- @use load = NodesResource(() => [
-    `http://127.0.0.1:8000/api/folders/`, this.args.endpoint
-  ]);
 }
