@@ -1,12 +1,12 @@
 
 <nav aria-label="breadcrumb" class="m-2 nav-breadcrumb">
-    {{#if this.load.isLoading}}
+    {{#if this.isLoading}}
         <Spinner />
     {{else}}
         <Spinner::Placeholder />
     {{/if}}
     <ul class="breadcrumb">
-        {{#each this.data.attributes.breadcrumb as |item|}}
+        {{#each this.items as |item|}}
             <Breadcrumb::Item
                 @id={{get item 1}}
                 @title={{get item 0}}

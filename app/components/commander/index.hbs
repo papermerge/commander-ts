@@ -1,7 +1,10 @@
-<Breadcrumb @endpoint={{@endpoint}} @onClick={{@onNodeClick}} />
+<Breadcrumb
+    @items={{this.breadcrumb}}
+    @isLoading={{this.load.isLoading}}
+    @onClick={{@onNodeClick}} />
 
 {{#if this.load.isResolved}}
-    {{#each this.load.value as |node|}}
+    {{#each this.nodes as |node|}}
         {{#let (component node.nodeType) as |NodeType|}}
             <NodeType @node={{node}} @onClick={{@onNodeClick}} />
         {{/let}}

@@ -5,6 +5,8 @@
     <div class="col">
         <Commander
             @endpoint={{this.endpoint}}
+            @isLoading={{this.isLoading}}
+            @onLoadingStateChange={{this.onLoadingStateChange}}
             @onNodeClick={{this.onNodeClick}} />
     </div>
     <div class="col">

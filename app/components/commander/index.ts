@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
-import { resource, use, resourceFactory } from 'ember-resources';
-import { TrackedObject } from 'tracked-built-ins';
+import { resource, use } from 'ember-resources';
+import { TrackedObject, TrackedArray, tracked } from 'tracked-built-ins';
+import BreadcrumbItem from '../breadcrumb/item';
 
 
 enum BaseTreeNodeType {
@@ -20,7 +21,9 @@ interface IBaseTreeNode {
 
 interface Args {
   endpoint: string;
+  isLoading: boolean;
   onClick: (node_id: string) => void;
+  onLoadingStateChange: (new_state: boolean) => void;
 }
 
 class BaseTreeNode implements IBaseTreeNode {
@@ -44,55 +47,65 @@ class BaseTreeNode implements IBaseTreeNode {
 }
 
 
-const NodesResource = resourceFactory((args_foo) => {
+export default class Commander extends Component<Args> {
 
-  return resource(({ on }) => {
+  @tracked nodes = new TrackedArray([]);
+  @tracked breadcrumb = new TrackedArray<BreadcrumbItem>();
 
-    let [base_url, current_endpoint] = args_foo();
+  @use load = resource(({ on }) => {
 
     let state = new TrackedObject({
       isResolved: false,
       isLoading: true,
       isError:
       false,
-      value: null,
+      value: {},
       error: null
     });
 
     let controller = new AbortController();
 
+    let nodes_promise = fetch(`http://127.0.0.1:8000/api/nodes/${this.args.endpoint}/`,{
+      signal: controller.signal,
+      headers: {
+        Authorization:
+          'Token 0c724ad3d4101ba0b602c7fff44f4ff60c39e07d533c7eb7175c1b6d2efb47e3',
+      },
+    }).then(response => response.json());
+
+    let breadcrumb_promise = fetch(`http://127.0.0.1:8000/api/folders/${this.args.endpoint}/`,{
+      signal: controller.signal,
+      headers: {
+        Authorization:
+          'Token 0c724ad3d4101ba0b602c7fff44f4ff60c39e07d533c7eb7175c1b6d2efb47e3',
+      },
+    }).then(response => response.json());
+
+
     on.cleanup(() => controller.abort());
 
-    fetch(`${base_url}${current_endpoint}/`,{
-        signal: controller.signal,
-        headers: {
-          Authorization:
-            'Token 0c724ad3d4101ba0b602c7fff44f4ff60c39e07d533c7eb7175c1b6d2efb47e3',
-        },
-    })
-    .then(response => response.json())
+    this.args.onLoadingStateChange(true);
+
+    Promise.all([nodes_promise, breadcrumb_promise])
     .then(result => {
-      let items = result.data ?? [];
-      state.value = items.map((item: IBaseTreeNode) => new BaseTreeNode(item));
+      let node_items = result[0].data ?? [];
+      
+      this.nodes = node_items.map((item: IBaseTreeNode) => new BaseTreeNode(item));
+      this.breadcrumb = result[1].data.attributes.breadcrumb ?? [];
+
       state.isResolved = true;
       state.isError = false;
       state.isLoading = false;
+      this.args.onLoadingStateChange(false);
     })
     .catch(error => {
       state.error = error;
       state.isResolved = true;
       state.isError = true;
       state.isLoading = false;
+      this.args.onLoadingStateChange(false);
     });
 
     return state;
   });
-});
-
-
-export default class Commander extends Component<Args> {
-
-  @use load = NodesResource(() => [
-    'http://127.0.0.1:8000/api/nodes/', this.args.endpoint
-  ]);
 }
