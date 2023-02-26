@@ -1,4 +1,9 @@
 <div role="button" class="node folder" {{on "click" this.onClick}}>
+    {{#if this.is_loading}}
+        <Spinner />
+    {{else}}
+        <Spinner::Placeholder />
+    {{/if}}
     <div class="icon folder"></div>
 
     <div class="title d-flex flex-row align-items-center">

@@ -108,4 +108,8 @@ export default class Commander extends Component<Args> {
 
     return state;
   });
+
+  get loading_uuid(): string {
+    return this.args.endpoint;
+  }
 }
