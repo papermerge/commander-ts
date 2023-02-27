@@ -70,14 +70,8 @@ export default class FetchNodes extends Resource {
     constructor(owner: any) {
         super(owner);
 
-        console.log('registering destructor');
-        registerDestructor(
-            this, () => {
-                console.log("Calling abort");
-                this.#abortController.abort();
-            }
-        );
-      }
+        registerDestructor(this, () => this.#abortController.abort());
+    }
 
     modify(named: any, positional: any) {
       this.named = named;
