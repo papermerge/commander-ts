@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { use } from 'ember-resources';
-import FetchNodes from "../../resources/nodes";
+import FetchNodes from "commander-ts/resources/nodes";
 
 const BASE_URL = 'http://127.0.0.1:8000/api';
 
