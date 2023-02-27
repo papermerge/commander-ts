@@ -1,8 +1,10 @@
 import Component from '@glimmer/component';
-import { resource, use } from 'ember-resources';
-import { TrackedObject, TrackedArray, tracked } from 'tracked-built-ins';
+import { use, Resource } from 'ember-resources';
+import { TrackedArray, tracked } from 'tracked-built-ins';
 import BreadcrumbItem from '../breadcrumb/item';
 
+
+const BASE_URL = 'http://127.0.0.1:8000/api';
 
 enum BaseTreeNodeType {
   folder = 'folders',
@@ -19,11 +21,13 @@ interface IBaseTreeNode {
   attributes: BaseTreeNodeAttr;
 }
 
+type onLoadingStateChangeType = (new_state: boolean) => void;
+
 interface Args {
-  endpoint: string;
+  endpoint: string | undefined;
   isLoading: boolean;
   onClick: (node_id: string) => void;
-  onLoadingStateChange: (new_state: boolean) => void;
+  onLoadingStateChange: onLoadingStateChangeType;
 }
 
 class BaseTreeNode implements IBaseTreeNode {
@@ -46,26 +50,28 @@ class BaseTreeNode implements IBaseTreeNode {
   }
 }
 
-
-export default class Commander extends Component<Args> {
-
+class FetchData extends Resource {
+  named: any;
+  positional: any;
+  endpoint: string | undefined;
+  base_url: string | undefined;
   @tracked nodes = new TrackedArray([]);
   @tracked breadcrumb = new TrackedArray<BreadcrumbItem>();
+  @tracked isResolved: boolean = true;
+  @tracked isLoading: boolean = false;
+  @tracked isError: boolean = false;
+  @tracked error: string = '';
+  onLoadingStateChange: onLoadingStateChangeType | undefined;
 
-  @use load = resource(({ on }) => {
-
-    let state = new TrackedObject({
-      isResolved: false,
-      isLoading: true,
-      isError:
-      false,
-      value: {},
-      error: null
-    });
-
+  modify(named: any, positional: any) {
+    this.named = named;
+    this.positional = positional;
+    this.base_url = named[0];
+    this.endpoint = named[1];
+    this.onLoadingStateChange = named[2];
     let controller = new AbortController();
 
-    let nodes_promise = fetch(`http://127.0.0.1:8000/api/nodes/${this.args.endpoint}/`,{
+    let nodes_promise = fetch(`${this.base_url}/nodes/${this.endpoint}/`,{
       signal: controller.signal,
       headers: {
         Authorization:
@@ -73,7 +79,7 @@ export default class Commander extends Component<Args> {
       },
     }).then(response => response.json());
 
-    let breadcrumb_promise = fetch(`http://127.0.0.1:8000/api/folders/${this.args.endpoint}/`,{
+    let breadcrumb_promise = fetch(`${this.base_url}/folders/${this.endpoint}/`,{
       signal: controller.signal,
       headers: {
         Authorization:
@@ -81,10 +87,11 @@ export default class Commander extends Component<Args> {
       },
     }).then(response => response.json());
 
+    if (this.onLoadingStateChange) {
+      this.onLoadingStateChange(true);
+    }
 
-    on.cleanup(() => controller.abort());
-
-    this.args.onLoadingStateChange(true);
+    this.isLoading = true;
 
     Promise.all([nodes_promise, breadcrumb_promise])
     .then(result => {
@@ -93,23 +100,31 @@ export default class Commander extends Component<Args> {
       this.nodes = node_items.map((item: IBaseTreeNode) => new BaseTreeNode(item));
       this.breadcrumb = result[1].data.attributes.breadcrumb ?? [];
 
-      state.isResolved = true;
-      state.isError = false;
-      state.isLoading = false;
-      this.args.onLoadingStateChange(false);
+      this.isResolved = true;
+      this.isError = false;
+      this.isLoading = false;
+      if (this.onLoadingStateChange) {
+        this.onLoadingStateChange(false);
+      }
     })
     .catch(error => {
-      state.error = error;
-      state.isResolved = true;
-      state.isError = true;
-      state.isLoading = false;
-      this.args.onLoadingStateChange(false);
+      this.error = error;
+      this.isResolved = true;
+      this.isError = true;
+      this.isLoading = false;
+      if (this.onLoadingStateChange) {
+        this.onLoadingStateChange(false);
+      }
     });
+  }
+}
 
-    return state;
-  });
+export default class Commander extends Component<Args> {
 
-  get loading_uuid(): string {
+  // @ts-ignore
+  @use data = FetchData.from(() => [BASE_URL, this.args.endpoint]);
+
+  get loading_uuid(): string | undefined {
     return this.args.endpoint;
   }
 }

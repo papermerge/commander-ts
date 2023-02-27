@@ -1,10 +1,10 @@
 <Breadcrumb
-    @items={{this.breadcrumb}}
-    @isLoading={{this.load.isLoading}}
+    @items={{this.data.breadcrumb}}
+    @isLoading={{this.data.isLoading}}
     @onClick={{@onNodeClick}} />
 
 
-{{#each this.nodes as |node|}}
+{{#each this.data.nodes as |node|}}
     {{#let (component node.nodeType) (eq this.loading_uuid node.id) as |NodeType is_loading|}}
         <NodeType
             @node={{node}}
