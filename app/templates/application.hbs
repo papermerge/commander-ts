@@ -5,6 +5,7 @@
     <div class="col">
         <Commander
             @endpoint={{this.endpoint}}
+            @signal={{this.abort_controller.signal}}
             @isLoading={{this.isLoading}}
             @onLoadingStateChange={{this.onLoadingStateChange}}
             @onNodeClick={{this.onNodeClick}} />

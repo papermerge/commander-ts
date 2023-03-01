@@ -5,7 +5,7 @@ import { action } from '@ember/object';
 export default class ApplicationController extends Controller {
   @tracked endpoint: string | undefined =
     'be97f78c-82db-417d-a62b-e3c048295a41';
-  
+
   @tracked isLoading: boolean = false;
 
   @action
