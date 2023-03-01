@@ -1,7 +1,4 @@
 import Component from '@glimmer/component';
-import { resource, use } from 'ember-resources';
-import { TrackedObject, tracked } from 'tracked-built-ins';
-
 
 type BreadcrumbItem = [string, string];
 
