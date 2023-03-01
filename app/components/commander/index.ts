@@ -3,10 +3,6 @@ import { use } from 'ember-resources';
 
 import { RemoteData, keepLatest } from 'commander-ts/resources/nodes';
 
-const BASE_URL = 'http://127.0.0.1:8000/api';
-
-type onLoadingStateChangeType = (new_state: boolean) => void;
-
 interface Args {
   endpoint: string | undefined;
   isLoading: boolean;
