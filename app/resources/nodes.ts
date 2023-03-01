@@ -1,60 +1,23 @@
-import { Resource, resource, resourceFactory } from 'ember-resources';
-import { TrackedArray, tracked, TrackedObject } from 'tracked-built-ins';
+import { resource, resourceFactory } from 'ember-resources';
+import { TrackedObject } from 'tracked-built-ins';
 import { State } from 'commander-ts/resources/state';
 import type { Hooks } from 'ember-resources/core/function-based/types';
+import {
+  FetchOptions,
+  onLoadingStateChangeType,
+} from 'commander-ts';
+import type { IBaseTreeNode } from "commander-ts/types";
+import { BaseTreeNode, NodesWithBreadcrumb } from 'commander-ts/types';
 
 
 const BASE_URL = 'http://127.0.0.1:8000/api';
 
-type FetchOptions = Parameters<typeof fetch>[1];
-
-enum BaseTreeNodeType {
-  folder = 'folders',
-  document = 'document',
-}
-
-type BaseTreeNodeAttr = {
-  title: string;
-};
-
-interface IBaseTreeNode {
-  id: string;
-  type: BaseTreeNodeType;
-  attributes: BaseTreeNodeAttr;
-}
-
-type onLoadingStateChangeType = (new_state: boolean) => void;
 
 interface Args {
   endpoint: string | undefined;
   isLoading: boolean;
   onClick: (node_id: string) => void;
   onLoadingStateChange: onLoadingStateChangeType;
-}
-
-class BaseTreeNode implements IBaseTreeNode {
-  id: string;
-  type: BaseTreeNodeType;
-  attributes: BaseTreeNodeAttr;
-
-  constructor(item: IBaseTreeNode) {
-    this.id = item.id;
-    this.type = item.type;
-    this.attributes = item.attributes;
-  }
-
-  get nodeType(): 'folder' | 'document' {
-    if (this.type == BaseTreeNodeType.folder) {
-      return 'folder';
-    }
-
-    return 'document';
-  }
-}
-
-type NodesWithBreadcrumb = {
-  nodes: BaseTreeNode[];
-  breadcrumb: BaseTreeNode[];
 }
 
 const isEmpty = (x: undefined | unknown | unknown[]) => {

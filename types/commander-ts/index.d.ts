@@ -9,18 +9,8 @@ declare global {
 }
 
 declare module 'commander-ts' {
-  export enum BaseTreeNodeType {
-    folder = 'folders',
-    document = 'document',
-  }
 
-  export type BaseTreeNodeAttr = {
-    title: string;
-  };
+  export type FetchOptions = Parameters<typeof fetch>[1];
 
-  export interface IBaseTreeNode {
-    id: string;
-    type: BaseTreeNodeType;
-    attributes: BaseTreeNodeAttr;
-  }
+  export type onLoadingStateChangeType = (new_state: boolean) => void;
 }

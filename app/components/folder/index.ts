@@ -1,7 +1,8 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-
-import type { IBaseTreeNode } from 'commander-ts';
+import type {
+  IBaseTreeNode,
+} from "commander-ts/types";
 
 interface Args {
   node: IBaseTreeNode;
