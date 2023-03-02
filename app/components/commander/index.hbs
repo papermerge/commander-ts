@@ -8,7 +8,6 @@
     </button>
 {{/if}}
 
-
 <Breadcrumb
     @items={{this.latestData.breadcrumb}}
     @isLoading={{this.myData.isLoading}}
@@ -20,12 +19,16 @@
         <NodeType
             @node={{node}}
             @onClick={{@onNodeClick}}
+            @onCheckboxChange={{this.onCheckboxChange}}
             @is_loading={{is_loading}} />
     {{/let}}
 {{else}}
     Empty
 {{/each}}
 
+{{#each this.selected_nodes as |node|}}
+    {{node.attributes.title}}
+{{/each}}
 
 <Modal::Rename
     @node={{this.selected_node}}

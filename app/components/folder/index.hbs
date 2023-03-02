@@ -1,15 +1,18 @@
-<div role="button" class="node folder" {{on "click" this.onClick}}>
+<div class="node folder">
     {{#if this.is_loading}}
         <Spinner />
     {{else}}
         <Spinner::Placeholder />
     {{/if}}
+
+    {{!-- template-lint-disable require-input-label --}}
     <Input
         @type="checkbox"
-        @checked={{this.is_selected}} />
-    <div class="icon folder"></div>
+        @checked={{this.is_selected}}
+        {{on "change" this.onCheckboxChange}} />
 
-    <div class="title d-flex flex-row align-items-center">
+    <div role="button" class="title d-flex flex-row align-items-center" {{on "click" this.onClick}}>
+        <div class="icon folder"></div>
         <div class="mx-2">
             {{@node.attributes.title}}
         </div>
