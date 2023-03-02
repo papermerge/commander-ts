@@ -1,3 +1,14 @@
+<button type="button" class="btn btn-light" {{on "click" this.onNewFolder}}>
+    <i class="bi bi-folder-plus"></i>
+</button>
+
+{{#if this.selected_node}}
+    <button type="button" class="btn btn-light" {{on "click" this.onRename}}>
+        <i class="bi bi-pencil"></i>
+    </button>
+{{/if}}
+
+
 <Breadcrumb
     @items={{this.latestData.breadcrumb}}
     @isLoading={{this.myData.isLoading}}
@@ -14,3 +25,10 @@
 {{else}}
     Empty
 {{/each}}
+
+
+<Modal::Rename
+    @node={{this.selected_node}}
+    {{show-when this.rename_modal}} />
+
+<Modal::NewFolder {{show-when this.new_folder_modal}} />

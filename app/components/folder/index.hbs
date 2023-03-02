@@ -4,6 +4,9 @@
     {{else}}
         <Spinner::Placeholder />
     {{/if}}
+    <Input
+        @type="checkbox"
+        @checked={{this.is_selected}} />
     <div class="icon folder"></div>
 
     <div class="title d-flex flex-row align-items-center">
