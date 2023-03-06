@@ -1,5 +1,5 @@
 import { resource, resourceFactory } from 'ember-resources';
-import { TrackedObject } from 'tracked-built-ins';
+import { TrackedObject, TrackedSet } from 'tracked-built-ins';
 import { State } from 'commander-ts/resources/state';
 import type { Hooks } from 'ember-resources/core/function-based/types';
 import {
@@ -20,7 +20,7 @@ interface Args {
   onLoadingStateChange: onLoadingStateChangeType;
 }
 
-const isEmpty = (x: undefined | unknown | unknown[]) => {
+export const isEmpty = (x: undefined | unknown | unknown[]) => {
   if (Array.isArray(x)) {
     return x.length === 0;
   }
@@ -129,10 +129,16 @@ export function keepLatest<Return = unknown>({ when, value: valueFn }: Options<R
       let value = valueFn();
 
       if (when()) {
-        return (previous = isEmpty(value) ? previous : value);
+        if (isEmpty(value)) {
+          return previous;
+        } else {
+          previous = value;
+          return previous;
+        }
       }
 
-      return (previous = value);
+      previous = value;
+      return previous;
     };
   });
 }

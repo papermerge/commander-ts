@@ -9,12 +9,12 @@
 {{/if}}
 
 <Breadcrumb
-    @items={{this.latestData.breadcrumb}}
+    @items={{this.latest_data.breadcrumb}}
     @isLoading={{this.myData.isLoading}}
     @onClick={{@onNodeClick}} />
 
 
-{{#each this.latestData.nodes as |node|}}
+{{#each this.latest_data.nodes as |node|}}
     {{#let (component node.nodeType) (eq this.loading_uuid node.id) as |NodeType is_loading|}}
         <NodeType
             @node={{node}}
@@ -26,8 +26,9 @@
     Empty
 {{/each}}
 
+Selection:
 {{#each this.selected_nodes as |node|}}
-    {{node.attributes.title}}
+    {{node.attributes.title}},
 {{/each}}
 
 <Modal::Rename
