@@ -16,6 +16,7 @@ export default class Commander extends Component<Args> {
   headers = {
     Authorization:
       'Token 0c724ad3d4101ba0b602c7fff44f4ff60c39e07d533c7eb7175c1b6d2efb47e3',
+    'Content-type': 'application/vnd.api+json; charset=UTF-8',
   };
 
   @tracked _selected_nodes: TrackedSet<BaseTreeNode> = new TrackedSet<BaseTreeNode>([]);
@@ -67,6 +68,31 @@ export default class Commander extends Component<Args> {
   }
 
   @action
+  async onClickRename(node_id: string, new_title: string) {
+    let node = this.get_node_by(node_id);
+    let response = await fetch(
+      `http://127.0.0.1:8000/api/${node.nodeType}s/${node_id}/`,
+      {
+        headers: this.headers,
+        method: "PATCH",
+        body: JSON.stringify({
+          data: {
+            id: node_id,
+            type: `${node.nodeType}s`,
+            attributes: {title: new_title}
+          }
+        })
+      }
+    );
+    let json_response = await response.json();
+
+    if (response.status == 200) {
+      node.attributes.title = new_title;
+      this.rename_modal = false;
+    }
+  }
+
+  @action
   onCheckboxChange(node: BaseTreeNode, is_selected:  boolean) {
     /* Correct adjust `this._selected_node` and `this._selected_nodes` */
     if (is_selected) {
@@ -87,5 +113,12 @@ export default class Commander extends Component<Args> {
     } else {
       this._selected_node = null;
     }
+  }
+
+  get_node_by(node_id: string): BaseTreeNode {
+    // @ts-ignore
+    let all_nodes = this.latest_data.nodes;
+
+    return all_nodes.find((node: BaseTreeNode) => node.id == node_id)
   }
 }

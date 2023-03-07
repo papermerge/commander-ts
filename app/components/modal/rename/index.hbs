@@ -11,10 +11,13 @@
             id="node-title"
             class="form-control"
             @type="text"
-            @value={{@node.attributes.title}} />
+            @value={{this.title}} />
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Rename</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          {{on "click" this.onClickRename}}>Rename</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { resource, resourceFactory } from 'ember-resources';
-import { TrackedObject, TrackedSet } from 'tracked-built-ins';
+import { TrackedArray, TrackedObject } from 'tracked-built-ins';
 import { State } from 'commander-ts/resources/state';
 import type { Hooks } from 'ember-resources/core/function-based/types';
 import {
@@ -82,8 +82,11 @@ export function remoteData<T = unknown>(
   Promise.all([nodes_promise, breadcrumb_promise])
   .then(result => {
     let node_items = result[0].data ?? [];
+    let tracked_nodes = new TrackedArray<BaseTreeNode>(
+      node_items.map((item: IBaseTreeNode) => new BaseTreeNode(item))
+    );
     state.value = new TrackedObject({
-      nodes: node_items.map((item: IBaseTreeNode) => new BaseTreeNode(item)),
+      nodes: tracked_nodes,
       breadcrumb: result[1].data.attributes.breadcrumb ?? []
     });
   }).catch((error) => {

@@ -13,7 +13,6 @@
     @isLoading={{this.myData.isLoading}}
     @onClick={{@onNodeClick}} />
 
-
 {{#each this.latest_data.nodes as |node|}}
     {{#let (component node.nodeType) (eq this.loading_uuid node.id) as |NodeType is_loading|}}
         <NodeType
@@ -33,6 +32,7 @@ Selection:
 
 <Modal::Rename
     @node={{this.selected_node}}
+    @onClickRename={{this.onClickRename}}
     {{show-when this.rename_modal}} />
 
 <Modal::NewFolder {{show-when this.new_folder_modal}} />
