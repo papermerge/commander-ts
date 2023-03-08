@@ -43,21 +43,21 @@ export default class RenameModal extends Component<Args> {
   rename_node_task = task(
     {drop: true},
     async (node: BaseTreeNode, new_title: string|null) => {
-    let controller = new AbortController();
+      let controller = new AbortController();
 
-    try {
-      await rename_node(node, new_title, controller);
+      try {
+        await rename_node(node, new_title, controller);
 
-      if (new_title) {
-        node.attributes.title = new_title;
-        this.args.modalClose();
+        if (new_title) {
+          node.attributes.title = new_title;
+          this.args.modalClose();
+        }
+      } catch(e) {
+        console.log(`Ooops ${e}`);
+      } finally {
+        controller.abort();
+        this.new_title = null;
       }
-    } catch(e) {
-      console.log(`Ooops ${e}`);
-    } finally {
-      controller.abort();
-      this.new_title = null;
-    }
   });
 
   @action
