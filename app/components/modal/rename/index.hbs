@@ -14,11 +14,18 @@
             @value={{this.title}} />
       </div>
       <div class="modal-footer">
+        {{#if this.rename_node_task.isRunning}}
+          <Spinner />
+        {{/if}}
         <button
           type="button"
           class="btn btn-primary"
           {{on "click" this.onClickRename}}>Rename</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          {{on "click" this.onClickCancel}}>Cancel</button>
       </div>
     </div>
   </div>

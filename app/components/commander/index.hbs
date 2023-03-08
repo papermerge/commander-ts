@@ -32,7 +32,7 @@ Selection:
 
 <Modal::Rename
     @node={{this.selected_node}}
-    @onClickRename={{this.onClickRename}}
+    @modalClose={{this.renameModalClose}}
     {{show-when this.rename_modal}} />
 
 <Modal::NewFolder {{show-when this.new_folder_modal}} />

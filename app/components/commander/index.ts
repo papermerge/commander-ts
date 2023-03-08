@@ -4,7 +4,9 @@ import { use } from 'ember-resources';
 import { RemoteData, keepLatest, isEmpty } from 'commander-ts/resources/nodes';
 import { action } from '@ember/object';
 import { tracked, TrackedSet } from 'tracked-built-ins';
-import { BaseTreeNode } from 'commander-ts/types';
+import { BaseTreeNode, NodesWithBreadcrumb } from 'commander-ts/types';
+import { rename_node } from 'commander-ts/requests';
+
 
 interface Args {
   endpoint: string | undefined;
@@ -25,10 +27,10 @@ export default class Commander extends Component<Args> {
   @tracked _selected_node: BaseTreeNode | null = null;
 
   // @ts-ignore
-  @use _remote_data = RemoteData(() => ({endpoint: this.args.endpoint, headers: this.headers}));
+  @use _remote_data = RemoteData<NodesWithBreadcrumb>(() => ({endpoint: this.args.endpoint, headers: this.headers}));
   @use latest_data = keepLatest({
-      value: () => this._remote_data.value,
-      when: () => this._remote_data.isLoading,
+    value: () => this._remote_data.value,
+    when: () => this._remote_data.isLoading,
   });
 
   get loading_uuid(): string | undefined {
@@ -53,7 +55,6 @@ export default class Commander extends Component<Args> {
     if (isEmpty(this._remote_data.value)) {
       this._selected_node = null;
     }
-    console.log("Selected Node");
     return this._selected_node;
   }
 
@@ -68,28 +69,8 @@ export default class Commander extends Component<Args> {
   }
 
   @action
-  async onClickRename(node_id: string, new_title: string) {
-    let node = this.get_node_by(node_id);
-    let response = await fetch(
-      `http://127.0.0.1:8000/api/${node.nodeType}s/${node_id}/`,
-      {
-        headers: this.headers,
-        method: "PATCH",
-        body: JSON.stringify({
-          data: {
-            id: node_id,
-            type: `${node.nodeType}s`,
-            attributes: {title: new_title}
-          }
-        })
-      }
-    );
-    let json_response = await response.json();
-
-    if (response.status == 200) {
-      node.attributes.title = new_title;
-      this.rename_modal = false;
-    }
+  async renameModalClose() {
+    this.rename_modal = false;
   }
 
   @action
@@ -119,6 +100,7 @@ export default class Commander extends Component<Args> {
     // @ts-ignore
     let all_nodes = this.latest_data.nodes;
 
+    // @ts-ignore
     return all_nodes.find((node: BaseTreeNode) => node.id == node_id)
   }
 }

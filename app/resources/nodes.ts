@@ -54,7 +54,7 @@ export function remoteData<T = unknown>(
   endpoint: string,
   options: FetchOptions = {}
 ): State {
-  let state = new State();
+  let state = new State<NodesWithBreadcrumb>();
   let controller = new AbortController();
 
   on.cleanup(() => controller.abort());
@@ -96,9 +96,11 @@ export function remoteData<T = unknown>(
   return state;
 }
 
-export function RemoteData(endpoint: string, options?: FetchOptions): State;
+type RemoteDataFunction = (() => string) | (() => { endpoint: string } & FetchOptions);
+
+export function RemoteData<T>(endpoint: string, options?: FetchOptions): State<T>;
 export function RemoteData(
-  endpoint: string | (() => string) | (() => { endpoint: string } & FetchOptions),
+  endpoint: string | RemoteDataFunction,
   opts?: FetchOptions
 ): State {
   return resource((hooks) => {
