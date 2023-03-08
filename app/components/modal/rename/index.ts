@@ -15,13 +15,6 @@ interface Args {
 export default class RenameModal extends Component<Args> {
 
   @tracked new_title: string|null = null;
-  @tracked processing: boolean = false;
-
-  headers = {
-    Authorization:
-      'Token 0c724ad3d4101ba0b602c7fff44f4ff60c39e07d533c7eb7175c1b6d2efb47e3',
-    'Content-type': 'application/vnd.api+json; charset=UTF-8',
-  };
 
   // every time node changes, `old_title` changes as well
   old_title: State<string|null> = trackedFunction(this, async () => {

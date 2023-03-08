@@ -5,8 +5,6 @@ import { RemoteData, keepLatest, isEmpty } from 'commander-ts/resources/nodes';
 import { action } from '@ember/object';
 import { tracked, TrackedSet } from 'tracked-built-ins';
 import { BaseTreeNode, NodesWithBreadcrumb } from 'commander-ts/types';
-import { rename_node } from 'commander-ts/requests';
-
 
 interface Args {
   endpoint: string | undefined;

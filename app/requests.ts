@@ -1,5 +1,4 @@
 import { BaseTreeNode } from "./types";
-import { task } from 'ember-concurrency';
 
 const HEADERS = {
   Authorization:
