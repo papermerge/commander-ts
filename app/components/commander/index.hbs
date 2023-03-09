@@ -1,10 +1,24 @@
-<button type="button" class="btn btn-light" {{on "click" this.onNewFolder}}>
+<button type="button"
+    class="btn btn-light"
+    {{on "click" this.onNewFolder}}>
     <i class="bi bi-folder-plus"></i>
 </button>
 
-{{#if this.selected_node}}
-    <button type="button" class="btn btn-light" {{on "click" this.onRename}}>
+{{#if this.only_one_node_selected}}
+    <button
+        type="button"
+        class="btn btn-light"
+        {{on "click" this.onRename}}>
         <i class="bi bi-pencil"></i>
+    </button>
+{{/if}}
+
+{{#if this.multiple_nodes_selected}}
+    <button
+        type="button"
+        class="btn btn-danger"
+        {{on "click" this.onDeleteNodes}}>
+        <i class="bi bi-trash"></i>
     </button>
 {{/if}}
 
@@ -25,11 +39,6 @@
     Empty
 {{/each}}
 
-Selection:
-{{#each this.selected_nodes as |node|}}
-    {{node.attributes.title}},
-{{/each}}
-
 <Modal::Rename
     @node={{this.selected_node}}
     @modalClose={{this.renameModalClose}}
@@ -40,3 +49,9 @@ Selection:
     @parent_id={{this.endpoint}}
     @modalClose={{this.newFolderModalClose}}
     {{show-when this.new_folder_modal}} />
+
+<Modal::DeleteNodes
+    @nodes={{this.latest_data.nodes}}
+    @selected_nodes={{this.selected_nodes}}
+    @modalClose={{this.deleteNodesModalClose}}
+    {{show-when this.delete_nodes_modal}} />
