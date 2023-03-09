@@ -30,7 +30,7 @@ export default class DeleteNodeModal extends Component<Args> {
   });
 
   @action
-  async onClickCreate() {
+  async onClickDelete() {
     this.delete_nodes_task.perform(this.args.nodes, this.args.selected_nodes);
   }
 

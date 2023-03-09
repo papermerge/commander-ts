@@ -1,10 +1,24 @@
-<button type="button" class="btn btn-light" {{on "click" this.onNewFolder}}>
+<button type="button"
+    class="btn btn-light"
+    {{on "click" this.onNewFolder}}>
     <i class="bi bi-folder-plus"></i>
 </button>
 
-{{#if this.selected_node}}
-    <button type="button" class="btn btn-light" {{on "click" this.onRename}}>
+{{#if this.only_one_node_selected}}
+    <button
+        type="button"
+        class="btn btn-light"
+        {{on "click" this.onRename}}>
         <i class="bi bi-pencil"></i>
+    </button>
+{{/if}}
+
+{{#if this.multiple_nodes_selected}}
+    <button
+        type="button"
+        class="btn btn-danger"
+        {{on "click" this.onDeleteNodes}}>
+        <i class="bi bi-trash"></i>
     </button>
 {{/if}}
 
