@@ -35,4 +35,8 @@ Selection:
     @modalClose={{this.renameModalClose}}
     {{show-when this.rename_modal}} />
 
-<Modal::NewFolder {{show-when this.new_folder_modal}} />
+<Modal::NewFolder
+    @nodes={{this.latest_data.nodes}}
+    @parent_id={{this.endpoint}}
+    @modalClose={{this.newFolderModalClose}}
+    {{show-when this.new_folder_modal}} />

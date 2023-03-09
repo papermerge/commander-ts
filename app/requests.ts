@@ -32,3 +32,43 @@ export function rename_node(
     }
   );
 }
+
+export async function new_folder(
+  parent_id: string,
+  new_title: string|null,
+  abort_controller: AbortController
+): Promise<BaseTreeNode> {
+  return fetch(
+    // POST <base URL>/nodes/
+    `${BASE_URL}/nodes/`,
+    {
+      headers: HEADERS,
+      method: "POST",
+      signal: abort_controller.signal,
+      body: JSON.stringify({
+        data: {
+          type: 'folders',
+          attributes: {
+            title: new_title
+          },
+          relationships: {
+            parent: {
+              data: {
+                type: 'folders',
+                id: parent_id
+              }
+            }
+          }
+        }
+      })
+    }
+  )
+  .then(response => response.json())
+  .then(response_json => {
+    let node: BaseTreeNode;
+    node = new BaseTreeNode(response_json.data);
+    return node;
+  });
+
+}
+

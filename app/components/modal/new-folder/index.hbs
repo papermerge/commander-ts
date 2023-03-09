@@ -11,11 +11,21 @@
             id="node-title"
             class="form-control"
             @type="text"
-            @value="new title" />
+            @value={{this.new_title}} />
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Create Folder</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        {{#if this.new_folder_task.isRunning}}
+          <Spinner />
+        {{/if}}
+        <button
+          type="button"
+          class="btn btn-primary"
+          {{on "click" this.onClickCreate}}>Create Folder</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          {{on "click" this.onClickCancel}}>Cancel</button>
       </div>
     </div>
   </div>

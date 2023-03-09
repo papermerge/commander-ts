@@ -7,7 +7,7 @@ import { tracked, TrackedSet } from 'tracked-built-ins';
 import { BaseTreeNode, NodesWithBreadcrumb } from 'commander-ts/types';
 
 interface Args {
-  endpoint: string | undefined;
+  endpoint: string | null;
   isLoading: boolean;
   onClick: (node_id: string) => void;
 }
@@ -31,7 +31,11 @@ export default class Commander extends Component<Args> {
     when: () => this._remote_data.isLoading,
   });
 
-  get loading_uuid(): string | undefined {
+  get loading_uuid(): string | null {
+    return this.args.endpoint;
+  }
+
+  get endpoint(): string | null {
     return this.args.endpoint;
   }
 
@@ -69,6 +73,11 @@ export default class Commander extends Component<Args> {
   @action
   async renameModalClose() {
     this.rename_modal = false;
+  }
+
+  @action
+  async newFolderModalClose() {
+    this.new_folder_modal = false;
   }
 
   @action
