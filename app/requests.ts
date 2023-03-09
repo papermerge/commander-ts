@@ -69,6 +69,22 @@ export async function new_folder(
     node = new BaseTreeNode(response_json.data);
     return node;
   });
+}
 
+export async function delete_nodes(
+  nodes: BaseTreeNode[],
+  selected_nodes: BaseTreeNode[],
+  abort_controller: AbortController
+): Promise<Response> {
+  return fetch(
+    // DELETE <base URL>/nodes/
+    `${BASE_URL}/nodes/`,
+    {
+      headers: HEADERS,
+      method: "DELETE",
+      signal: abort_controller.signal,
+      body: JSON.stringify({})
+    }
+  );
 }
 

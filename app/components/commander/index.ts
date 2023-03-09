@@ -22,6 +22,7 @@ export default class Commander extends Component<Args> {
   @tracked _selected_nodes: TrackedSet<BaseTreeNode> = new TrackedSet<BaseTreeNode>([]);
   @tracked new_folder_modal: boolean = false;
   @tracked rename_modal: boolean = false;
+  @tracked delete_nodes_modal: boolean = false;
   @tracked _selected_node: BaseTreeNode | null = null;
 
   // @ts-ignore
@@ -71,6 +72,11 @@ export default class Commander extends Component<Args> {
   }
 
   @action
+  onDeleteNodes() {
+    this.delete_nodes_modal = true;
+  }
+
+  @action
   async renameModalClose() {
     this.rename_modal = false;
   }
@@ -78,6 +84,11 @@ export default class Commander extends Component<Args> {
   @action
   async newFolderModalClose() {
     this.new_folder_modal = false;
+  }
+
+  @action
+  deleteNodesModalClose() {
+    this.delete_nodes_modal = false;
   }
 
   @action

@@ -25,11 +25,6 @@
     Empty
 {{/each}}
 
-Selection:
-{{#each this.selected_nodes as |node|}}
-    {{node.attributes.title}},
-{{/each}}
-
 <Modal::Rename
     @node={{this.selected_node}}
     @modalClose={{this.renameModalClose}}
@@ -40,3 +35,9 @@ Selection:
     @parent_id={{this.endpoint}}
     @modalClose={{this.newFolderModalClose}}
     {{show-when this.new_folder_modal}} />
+
+<Modal::DeleteNodes
+    @nodes={{this.latest_data.nodes}}
+    @selected_nodes={{this.selected_nodes}}
+    @modalClose={{this.deleteNodesModalClose}}
+    {{show-when this.delete_nodes_modal}} />
